@@ -24,6 +24,9 @@ coverage/
 # Docker / Compose
 *.log
 
+# Vite
+*.timestamp-*
+
 # OS / Editor
 .DS_Store
 .idea/
