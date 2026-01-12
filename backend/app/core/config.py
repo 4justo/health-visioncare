@@ -22,3 +22,8 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 settings = Settings()
+    # Upload settings
+    UPLOAD_DIR: str = "uploads"
+    MAX_UPLOAD_SIZE: int = 50 * 1024 * 1024  # 50MB
+    ALLOWED_EXTENSIONS: list = ['.jpg', '.jpeg', '.png', '.tiff', '.bmp']
+    ALLOWED_MIME_TYPES: list = ['image/jpeg', 'image/png', 'image/tiff', 'image/bmp']
