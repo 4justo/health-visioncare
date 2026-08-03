@@ -1,9 +1,12 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-from ...core.database import get_db
 from datetime import datetime
 
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from ...core.database import get_db
+
 router = APIRouter()
+
 
 @router.get("/health")
 async def health_check():
@@ -11,21 +14,18 @@ async def health_check():
         "status": "healthy",
         "service": "VisionCare API",
         "version": "0.1.0",
-        "timestamp": datetime.utcnow().isoformat()
+        "timestamp": datetime.utcnow().isoformat(),
     }
+
 
 @router.get("/health/db")
 async def db_health_check(db: Session = Depends(get_db)):
     try:
-        # Test database connection
         db.execute("SELECT 1")
-        return {
-            "status": "healthy",
-            "database": "connected"
-        }
+        return {"status": "healthy", "database": "connected"}
     except Exception as e:
         return {
             "status": "unhealthy",
             "database": "disconnected",
-            "error": str(e)
+            "error": str(e),
         }

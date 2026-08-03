@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   backend-tests:
@@ -26,28 +26,29 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-          
-      - name: Install dependencies
+
+      - name: Install backend dependencies
         run: |
           cd backend
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install -r requirements-dev.txt
-          
-      - name: Run linting
+
+      - name: Run backend linting
         run: |
           cd backend
           black --check .
           ruff check .
-          
-      - name: Run tests
+
+      - name: Run backend tests
         run: |
           cd backend
-          pytest tests/
+          PYTHONPATH=. pytest tests/
         env:
           POSTGRES_HOST: localhost
           POSTGRES_USER: postgres
@@ -56,26 +57,26 @@ jobs:
 
   frontend-tests:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          
-      - name: Install dependencies
+
+      - name: Install frontend dependencies
         run: |
           cd frontend
-          npm ci
-          
-      - name: Run linting
+          npm install
+
+      - name: Run frontend linting
         run: |
           cd frontend
           npm run lint
-          
-      - name: Build
+
+      - name: Build frontend
         run: |
           cd frontend
           npm run build
